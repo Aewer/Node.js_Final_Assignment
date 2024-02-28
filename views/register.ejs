@@ -92,7 +92,11 @@
             if(res.status === 400 || res.status === 401){
                 return display.textContent = `${data.message}. ${data.error ? data.error : ''}`
             }
-            data.role === "admin" ? location.assign('/admin') : location.assign('/basic')
+            if (data.role === "admin") {
+                location.assign('/admin')
+            } else {
+                location.assign('/basic')
+            }
         } catch (err) {
             console.log(err.message)
         }

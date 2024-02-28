@@ -1,4 +1,4 @@
-const User = require("./model")
+const {User} = require("./model")
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken')
 
@@ -50,7 +50,6 @@ exports.login = async (req, res, next) => {
             message: "Username or Password required",
         })
     }
-    const hashedPassword = await bcrypt.hash(password, 10)
     try {
         const user = await User.findOne({username})
         if (!user) {

@@ -40,5 +40,23 @@ const userSchema = new mongoose.Schema({
     timestamps: true
 })
 
+const itemSchema = new mongoose.Schema({
+    name: {
+        type: String,
+        required: true
+    },
+    description: {
+        type: String
+    },
+    images: {
+        type: [String]
+    }
+}, {
+    timestamps: true
+})
+
+
 const User = mongoose.model("user", userSchema)
-module.exports = User
+const Item = mongoose.model("item", itemSchema);
+
+module.exports = {User, Item}
