@@ -1,5 +1,5 @@
 const {User} = require("./model")
-const bcrypt = require('bcryptjs');
+const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 
 const jwtSecret = 'f790d5798f6622bf1d659c0cbfdad2e4e35236e5e79ef6dcf2ff8540bd0278053fc583'
@@ -108,7 +108,7 @@ exports.adminAuth = (req, res, next) => {
     } else {
         return res
             .status(401)
-            .json({ message: "Not authorized, token not available" })
+            .json({message: "Not authorized, token not available"})
     }
 }
 
@@ -117,10 +117,10 @@ exports.userAuth = (req, res, next) => {
     if (token) {
         jwt.verify(token, jwtSecret, (err, decodedToken) => {
             if (err) {
-                return res.status(401).json({ message: "Not authorized" })
+                return res.status(401).json({message: "Not authorized"})
             } else {
-                if (decodedToken.role !== "Basic") {
-                    return res.status(401).json({ message: "Not authorized" })
+                if (decodedToken.role !== "Basic" && decodedToken.role !== "admin") {
+                    return res.status(401).json({message: "Not authorized"})
                 } else {
                     next()
                 }

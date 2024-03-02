@@ -10,7 +10,7 @@
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container">
-        <a class="navbar-brand" href="#">Portfolio</a>
+        <a class="navbar-brand" href="/">Portfolio</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -21,6 +21,12 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/login">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin">Admin</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/logout">Log out</a>
                 </li>
             </ul>
         </div>
@@ -60,21 +66,16 @@
             const res = await fetch('/api/auth/login', {
                 method: 'POST',
                 body: JSON.stringify({ username: username.value, password: password.value }),
-                headers: { 'Content-Type': 'application/json' }
+                headers: {'Content-Type': 'application/json'}
             })
             const data = await res.json()
             if (res.status === 400 || res.status === 401) {
                 return display.textContent = `${data.message}. ${data.error ? data.error : ''}`
             }
-            if (data.role === "admin") {
-                location.assign('/admin')
-            } else {
-                location.assign('/basic')
-            }
+            location.assign('/')
         } catch (err) {
             console.log(err.message)
         }
-
     })
 </script>
 

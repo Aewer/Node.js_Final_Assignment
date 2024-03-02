@@ -10,7 +10,7 @@
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container">
-        <a class="navbar-brand" href="#">Portfolio</a>
+        <a class="navbar-brand" href="/">Portfolio</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -22,10 +22,18 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/login">Login</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin">Admin</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/logout">Log out</a>
+                </li>
             </ul>
         </div>
     </div>
 </nav>
+
+<div class="error" style="background-color: red;"></div>
 
 <h1>Add New Portfolio Item</h1>
 <form action="/admin/add" method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
@@ -47,34 +55,41 @@
     <button type="submit" class="btn btn-primary">Add Item</button>
 </form>
 
-
-<ul></ul>
-<button class="logout"><a href="/logout">Log Out</a></button>
-
 <script>
-    const form = document.querySelector('form')
-    const name = document.querySelector('#name')
-    const description = document.querySelector('#description')
-    const images = document.querySelector('#images')
-    const display = document.querySelector('.error')
-    form.addEventListener('submit', async (e) => {
-        e.preventDefault()
-        display.textContent = ''
-        try {
-            const res = await fetch('/api/auth/admin/add', {
-                method: 'POST',
-                body: {name, description, images},
-                headers: {'Content-Type': 'application/json'}
-            })
-            const data = await res.json()
-            if (res.status === 400 || res.status === 401) {
-                return display.textContent = `${data.message}. ${data.error ? data.error : ''}`
-            }
-        } catch (err) {
-            console.log(err.message)
-        }
 
-    })
+const form = document.querySelector('form');
+const name = document.querySelector('#name');
+const description = document.querySelector('#description');
+const images = document.querySelector('#images');
+const display = document.querySelector('.error')
+
+form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    display.textContent = '';
+
+    const formData = new FormData();
+    formData.append('name', name.value);
+    formData.append('description', description.value);
+
+    for (const file of images.files) {
+        formData.append('images', file);
+    }
+
+    try {
+        const res = await fetch('/api/auth/admin/add', {
+            method: 'POST',
+            body: formData,
+        });
+
+        const data = await res.json();
+
+        if (res.status === 400 || res.status === 401) {
+            return display.textContent = `${data.message}. ${data.error ? data.error : ''}`;
+        }
+    } catch (err) {
+        console.log(err.message);
+    }
+});
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>

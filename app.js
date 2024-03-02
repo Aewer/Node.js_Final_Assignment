@@ -1,7 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cookieParser = require("cookie-parser");
-const { adminAuth, userAuth } = require("./auth.js");
+const {adminAuth, userAuth} = require("./auth.js");
 
 const app = express();
 
